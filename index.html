@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fütterungsrechner – Josera</title>
+<style>
+  :root{
+    --moss:#556b2f;
+    --moss-dark:#3f5122;
+    --orange:#e67e22;
+    --orange-light:#f5a04b;
+    --cream:#fffaf0;
+    --text:#26311c;
+    --muted:#68715f;
+    --white:#ffffff;
+    --shadow:0 12px 35px rgba(63,81,34,.16);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:Segoe UI,Arial,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(230,126,34,.15), transparent 28%),
+      linear-gradient(135deg,#f5f3e8 0%,#eef1df 100%);
+  }
+  .app{max-width:1050px;margin:0 auto;padding:28px 18px 40px}
+  header{
+    background:var(--moss);
+    color:white;
+    border-radius:22px 22px 8px 8px;
+    padding:28px 30px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  header:after{
+    content:"";
+    position:absolute;right:-50px;top:-70px;width:220px;height:220px;
+    border-radius:50%;background:var(--orange);opacity:.85;
+  }
+  h1{margin:0;font-size:clamp(28px,5vw,44px);position:relative;z-index:1}
+  .subtitle{margin:7px 0 0;font-size:16px;opacity:.92;position:relative;z-index:1}
+  main{display:grid;grid-template-columns:360px 1fr;gap:20px;margin-top:20px}
+  .card{
+    background:rgba(255,255,255,.94);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:var(--shadow);
+  }
+  .card h2{margin:0 0 18px;color:var(--moss-dark);font-size:22px}
+  label{display:block;font-weight:700;margin:16px 0 7px}
+  input,select{
+    width:100%;padding:14px 15px;border:2px solid #dce2d1;border-radius:12px;
+    font-size:17px;outline:none;background:#fff;color:var(--text);
+  }
+  input:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(230,126,34,.13)}
+  .unit{position:relative}
+  .unit span{position:absolute;right:15px;top:14px;color:var(--muted);font-weight:700}
+  .unit input{padding-right:55px}
+  button{
+    width:100%;margin-top:20px;border:0;border-radius:12px;padding:15px;
+    background:var(--orange);color:#fff;font-size:17px;font-weight:800;cursor:pointer;
+    transition:.15s transform,.15s background;
+  }
+  button:hover{background:#cf6d16;transform:translateY(-1px)}
+  .result{
+    border:2px solid #dfe6d2;background:#f8fbf3;border-radius:16px;padding:20px;
+  }
+  .result-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
+  .badge{background:var(--moss);color:#fff;padding:7px 11px;border-radius:999px;font-weight:700;font-size:13px}
+  .amount{
+    font-size:clamp(38px,6vw,58px);font-weight:900;color:var(--orange);line-height:1;
+    margin:12px 0 5px;
+  }
+  .amount small{font-size:20px;color:var(--moss-dark)}
+  .perday{font-weight:700;color:var(--muted)}
+  .portion{
+    margin-top:18px;padding:15px;border-radius:12px;background:#fff2df;border-left:5px solid var(--orange)
+  }
+  .portion strong{color:var(--moss-dark)}
+  .error{display:none;margin-top:15px;padding:12px;border-radius:10px;background:#fff0ed;color:#9b321d;font-weight:700}
+  .hint{font-size:13px;color:var(--muted);line-height:1.5;margin-top:12px}
+  .table-wrap{margin-top:20px;overflow:auto}
+  table{border-collapse:collapse;width:100%;min-width:720px;background:#fff;border-radius:12px;overflow:hidden}
+  th{background:var(--moss);color:#fff;padding:10px 8px}
+  td{padding:9px 8px;border-bottom:1px solid #e7eadf;text-align:center}
+  tr:nth-child(even) td{background:#f7f9f1}
+  .section-title{margin-top:26px!important}
+  .footnote{font-size:12px;color:var(--muted);line-height:1.55;margin-top:18px}
+  @media(max-width:780px){
+    main{grid-template-columns:1fr}
+    header{padding:24px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <h1>🐾 Fütterungsrechner</h1>
+  <div class="subtitle">Tägliche Fütterungsempfehlung anhand der abgebildeten Tabelle</div>
+</header>
+
+<main>
+  <section class="card">
+    <h2>Hund eingeben</h2>
+
+    <label for="age">Alter</label>
+    <div class="unit">
+      <input id="age" type="number" min="1" max="87" step="0.1" value="10" placeholder="z. B. 10">
+      <span>Wochen</span>
+    </div>
+
+    <label for="weight">Gewicht</label>
+    <div class="unit">
+      <input id="weight" type="number" min="10" max="80" step="0.1" value="12" placeholder="z. B. 12">
+      <span>kg</span>
+    </div>
+
+    <label for="meals">Mahlzeiten pro Tag</label>
+    <select id="meals">
+      <option value="3">3 Mahlzeiten</option>
+      <option value="4">4 Mahlzeiten</option>
+      <option value="2">2 Mahlzeiten</option>
+    </select>
+
+    <button onclick="calculate()">Fütterung berechnen</button>
+    <div id="error" class="error"></div>
+
+    <div class="hint">
+      Die Tabelle ist nach Monaten und Gewichtsstufen aufgebaut. Bei einem Gewicht
+      zwischen zwei Tabellenwerten wird die Empfehlung linear zwischen den beiden
+      Gewichtsstufen berechnet. Das Alter in Wochen wird der entsprechenden
+      Monatsspanne zugeordnet.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Aktuelle Empfehlung</h2>
+    <div class="result">
+      <div class="result-top">
+        <div>
+          <div id="ageLabel" class="badge">2 Monate</div>
+          <div id="amount" class="amount">— <small>g</small></div>
+          <div class="perday">empfohlene Menge pro Tag</div>
+        </div>
+        <div style="font-size:40px">🥣</div>
+      </div>
+
+      <div class="portion">
+        Bei <strong id="mealsText">3 Mahlzeiten</strong> entspricht das etwa
+        <strong id="portion">—</strong> pro Mahlzeit.
+      </div>
+    </div>
+
+    <h2 class="section-title">Verwendete Tabellenstufe</h2>
+    <div id="details" class="hint">Gib Alter und Gewicht ein.</div>
+  </section>
+</main>
+
+<section class="card table-wrap">
+  <h2>Originale Fütterungstabelle</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Gewicht</th><th>1 Monat</th><th>2 Monate</th><th>3 Monate</th>
+        <th>4 Monate</th><th>5–6 Monate</th><th>7–12 Monate</th><th>13–20 Monate</th>
+      </tr>
+    </thead>
+    <tbody id="dataTable"></tbody>
+  </table>
+  <div class="footnote">
+    Hinweis: Die Werte stammen aus der bereitgestellten Tabelle. Die Tabelle gibt
+    eine empfohlene Futtermenge <strong>pro Tier und Tag</strong> an. Die Berechnung
+    ist eine Orientierung und ersetzt keine individuelle Fütterungsberatung.
+  </div>
+</section>
+</div>
+
+<script>
+const weights = [10,20,30,40,60,80];
+const data = {
+  "1":  [[35,70],[50,110],[70,180],[90,240],[105,250],[140,310]],
+  "2":  [[90,120],[135,165],[185,225],[250,305],[285,350],[380,465]],
+  "3":  [[135,155],[235,290],[285,345],[390,430],[480,550],[540,635]],
+  "4":  [[165,175],[305,370],[365,440],[400,520],[570,705],[675,785]],
+  "5-6":[[160,185],[315,380],[400,470],[480,550],[685,835],[835,940]],
+  "7-12":[[155,170],[295,355],[390,440],[470,530],[785,880],[910,980]],
+  "13-20":[null,null,null,null,[735,825],[835,880]]
+};
+
+const labels = ["1","2","3","4","5-6","7-12","13-20"];
+
+function ageBand(weeks){
+  // Umrechnung auf die Monatsspannen der Vorlage (ca. 4,35 Wochen/Monat).
+  if(weeks < 4.35) return null;
+  if(weeks < 8.70) return "1";
+  if(weeks < 13.05) return "2";
+  if(weeks < 17.40) return "3";
+  if(weeks < 21.75) return "4";
+  if(weeks < 26.10) return "5-6";
+  if(weeks < 52.15) return "7-12";
+  if(weeks <= 87) return "13-20";
+  return null;
+}
+
+function interpolate(weight, band){
+  const col = data[band];
+  if(!col) return null;
+
+  // Für die 13–20-Monats-Spalte sind laut Vorlage nur 60 und 80 kg angegeben.
+  const valid = weights.map((w,i)=>({w,range:col[i]})).filter(x=>x.range);
+
+  if(weight < valid[0].w || weight > valid[valid.length-1].w) return null;
+
+  for(let i=0;i<valid.length;i++){
+    if(weight === valid[i].w) return valid[i].range;
+    if(weight < valid[i].w){
+      const a=valid[i-1], b=valid[i], t=(weight-a.w)/(b.w-a.w);
+      return [
+        Math.round(a.range[0]+t*(b.range[0]-a.range[0])),
+        Math.round(a.range[1]+t*(b.range[1]-a.range[1]))
+      ];
+    }
+  }
+}
+
+function calculate(){
+  const age=parseFloat(document.getElementById("age").value);
+  const weight=parseFloat(document.getElementById("weight").value);
+  const meals=parseInt(document.getElementById("meals").value);
+  const error=document.getElementById("error");
+
+  error.style.display="none";
+
+  if(!Number.isFinite(age) || age<4.35 || age>87){
+    error.textContent="Bitte ein Alter zwischen etwa 4,5 und 87 Wochen eingeben.";
+    error.style.display="block"; return;
+  }
+  if(!Number.isFinite(weight) || weight<10 || weight>80){
+    error.textContent="Diese Tabelle enthält Gewichtsstufen von 10 bis 80 kg. Bitte ein Gewicht in diesem Bereich eingeben.";
+    error.style.display="block"; return;
+  }
+
+  const band=ageBand(age);
+  const range=interpolate(weight,band);
+
+  if(!range){
+    error.textContent="Für diese Kombination enthält die bereitgestellte Tabelle keine ausreichende Gewichtsstufe.";
+    error.style.display="block"; return;
+  }
+
+  document.getElementById("ageLabel").textContent =
+    band==="5-6" ? "5–6 Monate" :
+    band==="7-12" ? "7–12 Monate" :
+    band==="13-20" ? "13–20 Monate" : band+" Monat"+(band==="1"?"":"e");
+
+  document.getElementById("amount").innerHTML =
+    `${range[0]}–${range[1]} <small>g</small>`;
+
+  document.getElementById("mealsText").textContent =
+    `${meals} Mahlzeiten`;
+
+  document.getElementById("portion").textContent =
+    `${Math.round(range[0]/meals)}–${Math.round(range[1]/meals)} g`;
+
+  document.getElementById("details").innerHTML =
+    `Alter: <strong>${age} Wochen</strong> → Tabellenbereich <strong>${
+      document.getElementById("ageLabel").textContent
+    }</strong><br>`+
+    `Gewicht: <strong>${weight} kg</strong> → Empfehlung für ${range[0]}–${range[1]} g/Tag.`;
+}
+
+function buildTable(){
+  const tbody=document.getElementById("dataTable");
+  weights.forEach((w,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td><strong>${w} kg</strong></td>`+
+      labels.map(b=>{
+        const r=data[b][i];
+        return `<td>${r ? r[0]+"–"+r[1]+" g" : "—"}</td>`;
+      }).join("");
+    tbody.appendChild(tr);
+  });
+}
+buildTable();
+calculate();
+
+document.getElementById("age").addEventListener("input",calculate);
+document.getElementById("weight").addEventListener("input",calculate);
+document.getElementById("meals").addEventListener("change",calculate);
+</script>
+</body>
+</html>
