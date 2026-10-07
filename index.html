@@ -2,295 +2,127 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fütterungsrechner – Josera</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#556b2f">
+<title>Fütterungsrechner – Josera Junior</title>
 <style>
-  :root{
-    --moss:#556b2f;
-    --moss-dark:#3f5122;
-    --orange:#e67e22;
-    --orange-light:#f5a04b;
-    --cream:#fffaf0;
-    --text:#26311c;
-    --muted:#68715f;
-    --white:#ffffff;
-    --shadow:0 12px 35px rgba(63,81,34,.16);
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    min-height:100vh;
-    font-family:Segoe UI,Arial,sans-serif;
-    color:var(--text);
-    background:
-      radial-gradient(circle at 15% 10%, rgba(230,126,34,.15), transparent 28%),
-      linear-gradient(135deg,#f5f3e8 0%,#eef1df 100%);
-  }
-  .app{max-width:1050px;margin:0 auto;padding:28px 18px 40px}
-  header{
-    background:var(--moss);
-    color:white;
-    border-radius:22px 22px 8px 8px;
-    padding:28px 30px;
-    box-shadow:var(--shadow);
-    position:relative;
-    overflow:hidden;
-  }
-  header:after{
-    content:"";
-    position:absolute;right:-50px;top:-70px;width:220px;height:220px;
-    border-radius:50%;background:var(--orange);opacity:.85;
-  }
-  h1{margin:0;font-size:clamp(28px,5vw,44px);position:relative;z-index:1}
-  .subtitle{margin:7px 0 0;font-size:16px;opacity:.92;position:relative;z-index:1}
-  main{display:grid;grid-template-columns:360px 1fr;gap:20px;margin-top:20px}
-  .card{
-    background:rgba(255,255,255,.94);
-    border-radius:18px;
-    padding:24px;
-    box-shadow:var(--shadow);
-  }
-  .card h2{margin:0 0 18px;color:var(--moss-dark);font-size:22px}
-  label{display:block;font-weight:700;margin:16px 0 7px}
-  input,select{
-    width:100%;padding:14px 15px;border:2px solid #dce2d1;border-radius:12px;
-    font-size:17px;outline:none;background:#fff;color:var(--text);
-  }
-  input:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(230,126,34,.13)}
-  .unit{position:relative}
-  .unit span{position:absolute;right:15px;top:14px;color:var(--muted);font-weight:700}
-  .unit input{padding-right:55px}
-  button{
-    width:100%;margin-top:20px;border:0;border-radius:12px;padding:15px;
-    background:var(--orange);color:#fff;font-size:17px;font-weight:800;cursor:pointer;
-    transition:.15s transform,.15s background;
-  }
-  button:hover{background:#cf6d16;transform:translateY(-1px)}
-  .result{
-    border:2px solid #dfe6d2;background:#f8fbf3;border-radius:16px;padding:20px;
-  }
-  .result-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
-  .badge{background:var(--moss);color:#fff;padding:7px 11px;border-radius:999px;font-weight:700;font-size:13px}
-  .amount{
-    font-size:clamp(38px,6vw,58px);font-weight:900;color:var(--orange);line-height:1;
-    margin:12px 0 5px;
-  }
-  .amount small{font-size:20px;color:var(--moss-dark)}
-  .perday{font-weight:700;color:var(--muted)}
-  .portion{
-    margin-top:18px;padding:15px;border-radius:12px;background:#fff2df;border-left:5px solid var(--orange)
-  }
-  .portion strong{color:var(--moss-dark)}
-  .error{display:none;margin-top:15px;padding:12px;border-radius:10px;background:#fff0ed;color:#9b321d;font-weight:700}
-  .hint{font-size:13px;color:var(--muted);line-height:1.5;margin-top:12px}
-  .table-wrap{margin-top:20px;overflow:auto}
-  table{border-collapse:collapse;width:100%;min-width:720px;background:#fff;border-radius:12px;overflow:hidden}
-  th{background:var(--moss);color:#fff;padding:10px 8px}
-  td{padding:9px 8px;border-bottom:1px solid #e7eadf;text-align:center}
-  tr:nth-child(even) td{background:#f7f9f1}
-  .section-title{margin-top:26px!important}
-  .footnote{font-size:12px;color:var(--muted);line-height:1.55;margin-top:18px}
-  @media(max-width:780px){
-    main{grid-template-columns:1fr}
-    header{padding:24px}
-  }
+:root{--moss:#556b2f;--dark:#3f5122;--orange:#e67e22;--ol:#fff0df;--bg:#f1f4e8;--text:#26311c;--border:#d9e1ce}
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Arial,sans-serif;color:var(--text);background:linear-gradient(135deg,#f5f6ef,#e9eedc)}
+.app{max-width:1100px;margin:auto;padding:12px}
+header{background:var(--moss);color:#fff;border-radius:18px;padding:22px;box-shadow:0 8px 25px #3f51222b;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;width:180px;height:180px;right:-55px;top:-80px;border-radius:50%;background:var(--orange)}
+h1{position:relative;z-index:1;margin:0;font-size:clamp(28px,6vw,42px)}.sub{position:relative;z-index:1;margin-top:6px}
+.layout{display:grid;grid-template-columns:330px 1fr;gap:16px;margin-top:16px}.card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 7px 22px #3f51221c}
+h2{margin:0 0 14px;color:var(--dark);font-size:21px}label{display:block;font-weight:700;margin:13px 0 6px}.unit{position:relative}
+input{width:100%;padding:13px 55px 13px 13px;border:2px solid var(--border);border-radius:10px;font-size:17px;outline:0}
+input:focus{border-color:var(--orange)}.unit span{position:absolute;right:13px;top:13px;color:#68715f;font-weight:700}
+button{width:100%;margin-top:17px;padding:14px;border:0;border-radius:10px;background:var(--orange);color:#fff;font-size:17px;font-weight:800}
+.error{display:none;margin-top:10px;padding:10px;border-radius:9px;background:#fff0ed;color:#9b321d;font-weight:700;font-size:14px}
+.note,.warning{margin-top:14px;padding:12px;border-radius:10px;font-size:13px;line-height:1.5}.note{background:var(--bg)}.warning{background:var(--ol);border-left:5px solid var(--orange)}
+.badge{display:inline-block;background:var(--moss);color:#fff;padding:6px 10px;border-radius:999px;font-size:13px;font-weight:700}.ageinfo{margin-top:7px;font-weight:700;color:var(--dark)}
+.foodgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}.food{border:2px solid var(--border);border-radius:14px;padding:14px;background:#fafcf7}.food.wet{background:#fffaf4;border-color:#efbd82}
+.food h3{margin:0;color:var(--dark);font-size:17px}.big{font-size:clamp(28px,5vw,40px);font-weight:900;color:var(--orange);margin:8px 0 2px}.small{font-size:13px;color:#68715f;font-weight:650}
+.meals{margin-top:15px}.meals h3{margin:0 0 7px;color:var(--dark);font-size:16px}.row{display:grid;grid-template-columns:70px 1fr 1fr;border-top:1px solid var(--border);padding:9px 0;font-size:14px}.row strong{font-size:15px}
+.tables{margin-top:16px}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}th{background:var(--moss);color:#fff;padding:9px 7px}td{padding:9px 7px;border-bottom:1px solid #e2e7da;text-align:center}td:first-child{font-weight:700;text-align:left;background:#f7f9f2}.foot{font-size:12px;color:#68715f;line-height:1.5;margin-top:12px}
+@media(max-width:780px){.layout{grid-template-columns:1fr}.foodgrid{grid-template-columns:1fr}.app{padding:9px}.card{padding:15px}}
 </style>
 </head>
 <body>
 <div class="app">
-<header>
-  <h1>🐾 Fütterungsrechner</h1>
-  <div class="subtitle">Tägliche Fütterungsempfehlung anhand der abgebildeten Tabelle</div>
-</header>
+<header><h1>🐾 Fütterungsrechner</h1><div class="sub">Josera Junior · Nass- und Trockenfutter</div></header>
 
-<main>
-  <section class="card">
-    <h2>Hund eingeben</h2>
+<div class="layout">
+<section class="card">
+<h2>Hund eingeben</h2>
+<label>Alter</label><div class="unit"><input id="age" type="number" min="4.5" max="87" step="0.1" value="10" inputmode="decimal"><span>Wochen</span></div>
+<label>Gewicht</label><div class="unit"><input id="weight" type="number" min="5" max="80" step="0.1" value="12" inputmode="decimal"><span>kg</span></div>
+<button onclick="calc()">Fütterung berechnen</button>
+<div id="err" class="error"></div>
+<div class="note">Die Mengen werden aus den von dir bereitgestellten Tabellen berechnet. Zwischen zwei vorhandenen Gewichtsangaben wird linear interpoliert.</div>
+</section>
 
-    <label for="age">Alter</label>
-    <div class="unit">
-      <input id="age" type="number" min="1" max="87" step="0.1" value="10" placeholder="z. B. 10">
-      <span>Wochen</span>
-    </div>
-
-    <label for="weight">Gewicht</label>
-    <div class="unit">
-      <input id="weight" type="number" min="10" max="80" step="0.1" value="12" placeholder="z. B. 12">
-      <span>kg</span>
-    </div>
-
-    <label for="meals">Mahlzeiten pro Tag</label>
-    <select id="meals">
-      <option value="3">3 Mahlzeiten</option>
-      <option value="4">4 Mahlzeiten</option>
-      <option value="2">2 Mahlzeiten</option>
-    </select>
-
-    <button onclick="calculate()">Fütterung berechnen</button>
-    <div id="error" class="error"></div>
-
-    <div class="hint">
-      Die Tabelle ist nach Monaten und Gewichtsstufen aufgebaut. Bei einem Gewicht
-      zwischen zwei Tabellenwerten wird die Empfehlung linear zwischen den beiden
-      Gewichtsstufen berechnet. Das Alter in Wochen wird der entsprechenden
-      Monatsspanne zugeordnet.
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>Aktuelle Empfehlung</h2>
-    <div class="result">
-      <div class="result-top">
-        <div>
-          <div id="ageLabel" class="badge">2 Monate</div>
-          <div id="amount" class="amount">— <small>g</small></div>
-          <div class="perday">empfohlene Menge pro Tag</div>
-        </div>
-        <div style="font-size:40px">🥣</div>
-      </div>
-
-      <div class="portion">
-        Bei <strong id="mealsText">3 Mahlzeiten</strong> entspricht das etwa
-        <strong id="portion">—</strong> pro Mahlzeit.
-      </div>
-    </div>
-
-    <h2 class="section-title">Verwendete Tabellenstufe</h2>
-    <div id="details" class="hint">Gib Alter und Gewicht ein.</div>
-  </section>
-</main>
-
-<section class="card table-wrap">
-  <h2>Originale Fütterungstabelle</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Gewicht</th><th>1 Monat</th><th>2 Monate</th><th>3 Monate</th>
-        <th>4 Monate</th><th>5–6 Monate</th><th>7–12 Monate</th><th>13–20 Monate</th>
-      </tr>
-    </thead>
-    <tbody id="dataTable"></tbody>
-  </table>
-  <div class="footnote">
-    Hinweis: Die Werte stammen aus der bereitgestellten Tabelle. Die Tabelle gibt
-    eine empfohlene Futtermenge <strong>pro Tier und Tag</strong> an. Die Berechnung
-    ist eine Orientierung und ersetzt keine individuelle Fütterungsberatung.
-  </div>
+<section class="card">
+<span id="badge" class="badge">1–2 Monate</span><div id="info" class="ageinfo">10 Wochen · 12 kg</div>
+<div class="foodgrid">
+<div class="food wet"><h3>🥫 Nassfutter</h3><div id="wet" class="big">—</div><div class="small">Tagesmenge</div></div>
+<div class="food"><h3>🥣 Trockenfutter</h3><div id="dry" class="big">—</div><div class="small">Tagesmenge</div></div>
+</div>
+<div class="meals"><h3>Menge pro Mahlzeit</h3>
+<div class="row"><strong>Mahlzeit</strong><strong>🥫 Nass</strong><strong>🥣 Trocken</strong></div>
+<div class="row"><strong>4×</strong><span id="w4">—</span><span id="d4">—</span></div>
+<div class="row"><strong>3×</strong><span id="w3">—</span><span id="d3">—</span></div>
+<div class="row"><strong>2×</strong><span id="w2">—</span><span id="d2">—</span></div>
+</div>
+<div class="warning"><strong>Wichtig:</strong> Nass- und Trockenfutter sind hier jeweils als eigene Tagesempfehlung angegeben. Die beiden vollständigen Tagesmengen nicht gleichzeitig verfüttern. Bei Mischfütterung müssen die jeweiligen Mengen reduziert werden.</div>
+<div id="details" class="foot"></div>
 </section>
 </div>
 
+<section class="card tables"><h2>Nassfutter · Josera Junior</h2><div class="scroll"><table>
+<thead><tr><th>Alter</th><th>5 kg</th><th>10 kg</th><th>20 kg</th><th>30 kg</th><th>40 kg</th></tr></thead>
+<tbody>
+<tr><td>1–2 Monate</td><td>230–290 g</td><td>355–445 g</td><td>550–645 g</td><td>715–840 g</td><td>885–1.040 g</td></tr>
+<tr><td>3–4 Monate</td><td>300–375 g</td><td>485–615 g</td><td>775–1.005 g</td><td>1.015–1.325 g</td><td>1.260–1.645 g</td></tr>
+<tr><td>5–12 Monate</td><td>330–370 g</td><td>550–635 g</td><td>920–1.075 g</td><td>1.225–1.480 g</td><td>1.525–1.840 g</td></tr>
+</tbody></table></div></section>
+
+<section class="card tables"><h2>Trockenfutter · Josera</h2><div class="scroll"><table>
+<thead><tr><th>Gewicht</th><th>1 Monat</th><th>2 Monate</th><th>3 Monate</th><th>4 Monate</th><th>5–6 Monate</th><th>7–12 Monate</th><th>13–20 Monate</th></tr></thead>
+<tbody id="dryTable"></tbody></table></div></section>
+<div class="foot" style="padding:0 4px 18px">Hinweis: Die Berechnung ist eine Orientierung anhand der bereitgestellten Tabellen. Individueller Bedarf kann abweichen.</div>
+</div>
+
 <script>
-const weights = [10,20,30,40,60,80];
-const data = {
-  "1":  [[35,70],[50,110],[70,180],[90,240],[105,250],[140,310]],
-  "2":  [[90,120],[135,165],[185,225],[250,305],[285,350],[380,465]],
-  "3":  [[135,155],[235,290],[285,345],[390,430],[480,550],[540,635]],
-  "4":  [[165,175],[305,370],[365,440],[400,520],[570,705],[675,785]],
-  "5-6":[[160,185],[315,380],[400,470],[480,550],[685,835],[835,940]],
-  "7-12":[[155,170],[295,355],[390,440],[470,530],[785,880],[910,980]],
-  "13-20":[null,null,null,null,[735,825],[835,880]]
+const DW=[10,20,30,40,60,80];
+const DD={
+"1":[[35,70],[50,110],[70,180],[90,240],[105,250],[140,310]],
+"2":[[90,120],[135,165],[185,225],[250,305],[285,350],[380,465]],
+"3":[[135,155],[235,290],[285,345],[390,430],[480,550],[540,635]],
+"4":[[165,175],[305,370],[365,440],[400,520],[570,705],[675,785]],
+"5-6":[[160,185],[315,380],[400,470],[480,550],[685,835],[835,940]],
+"7-12":[[155,170],[295,355],[390,440],[470,530],[785,880],[910,980]],
+"13-20":[null,null,null,null,[735,825],[835,880]]
+};
+const WW=[5,10,20,30,40];
+const WD={
+"1-2":[[230,290],[355,445],[550,645],[715,840],[885,1040]],
+"3-4":[[300,375],[485,615],[775,1005],[1015,1325],[1260,1645]],
+"5-12":[[330,370],[550,635],[920,1075],[1225,1480],[1525,1840]]
 };
 
-const labels = ["1","2","3","4","5-6","7-12","13-20"];
-
-function ageBand(weeks){
-  // Umrechnung auf die Monatsspannen der Vorlage (ca. 4,35 Wochen/Monat).
-  if(weeks < 4.35) return null;
-  if(weeks < 8.70) return "1";
-  if(weeks < 13.05) return "2";
-  if(weeks < 17.40) return "3";
-  if(weeks < 21.75) return "4";
-  if(weeks < 26.10) return "5-6";
-  if(weeks < 52.15) return "7-12";
-  if(weeks <= 87) return "13-20";
-  return null;
+function ageBand(x){
+if(x<4.35||x>87)return null;
+if(x<13.05)return{d:"2",w:"1-2",l:"1–2 Monate"};
+if(x<17.4)return{d:"3",w:"3-4",l:"3 Monate"};
+if(x<21.75)return{d:"4",w:"3-4",l:"4 Monate"};
+if(x<26.1)return{d:"5-6",w:"5-12",l:"5–6 Monate"};
+if(x<52.15)return{d:"7-12",w:"5-12",l:"7–12 Monate"};
+return{d:"13-20",w:"5-12",l:"13–20 Monate"};
 }
-
-function interpolate(weight, band){
-  const col = data[band];
-  if(!col) return null;
-
-  // Für die 13–20-Monats-Spalte sind laut Vorlage nur 60 und 80 kg angegeben.
-  const valid = weights.map((w,i)=>({w,range:col[i]})).filter(x=>x.range);
-
-  if(weight < valid[0].w || weight > valid[valid.length-1].w) return null;
-
-  for(let i=0;i<valid.length;i++){
-    if(weight === valid[i].w) return valid[i].range;
-    if(weight < valid[i].w){
-      const a=valid[i-1], b=valid[i], t=(weight-a.w)/(b.w-a.w);
-      return [
-        Math.round(a.range[0]+t*(b.range[0]-a.range[0])),
-        Math.round(a.range[1]+t*(b.range[1]-a.range[1]))
-      ];
-    }
-  }
+function interp(x,ws,rows){
+const a=ws.map((w,i)=>({w,r:rows[i]})).filter(z=>z.r);
+if(x<a[0].w||x>a[a.length-1].w)return null;
+if(x===a[0].w)return a[0].r;
+for(let i=1;i<a.length;i++)if(x<=a[i].w){
+let p=a[i-1],q=a[i],t=(x-p.w)/(q.w-p.w);
+return[Math.round(p.r[0]+t*(q.r[0]-p.r[0])),Math.round(p.r[1]+t*(q.r[1]-p.r[1]))];
 }
-
-function calculate(){
-  const age=parseFloat(document.getElementById("age").value);
-  const weight=parseFloat(document.getElementById("weight").value);
-  const meals=parseInt(document.getElementById("meals").value);
-  const error=document.getElementById("error");
-
-  error.style.display="none";
-
-  if(!Number.isFinite(age) || age<4.35 || age>87){
-    error.textContent="Bitte ein Alter zwischen etwa 4,5 und 87 Wochen eingeben.";
-    error.style.display="block"; return;
-  }
-  if(!Number.isFinite(weight) || weight<10 || weight>80){
-    error.textContent="Diese Tabelle enthält Gewichtsstufen von 10 bis 80 kg. Bitte ein Gewicht in diesem Bereich eingeben.";
-    error.style.display="block"; return;
-  }
-
-  const band=ageBand(age);
-  const range=interpolate(weight,band);
-
-  if(!range){
-    error.textContent="Für diese Kombination enthält die bereitgestellte Tabelle keine ausreichende Gewichtsstufe.";
-    error.style.display="block"; return;
-  }
-
-  document.getElementById("ageLabel").textContent =
-    band==="5-6" ? "5–6 Monate" :
-    band==="7-12" ? "7–12 Monate" :
-    band==="13-20" ? "13–20 Monate" : band+" Monat"+(band==="1"?"":"e");
-
-  document.getElementById("amount").innerHTML =
-    `${range[0]}–${range[1]} <small>g</small>`;
-
-  document.getElementById("mealsText").textContent =
-    `${meals} Mahlzeiten`;
-
-  document.getElementById("portion").textContent =
-    `${Math.round(range[0]/meals)}–${Math.round(range[1]/meals)} g`;
-
-  document.getElementById("details").innerHTML =
-    `Alter: <strong>${age} Wochen</strong> → Tabellenbereich <strong>${
-      document.getElementById("ageLabel").textContent
-    }</strong><br>`+
-    `Gewicht: <strong>${weight} kg</strong> → Empfehlung für ${range[0]}–${range[1]} g/Tag.`;
 }
-
-function buildTable(){
-  const tbody=document.getElementById("dataTable");
-  weights.forEach((w,i)=>{
-    const tr=document.createElement("tr");
-    tr.innerHTML=`<td><strong>${w} kg</strong></td>`+
-      labels.map(b=>{
-        const r=data[b][i];
-        return `<td>${r ? r[0]+"–"+r[1]+" g" : "—"}</td>`;
-      }).join("");
-    tbody.appendChild(tr);
-  });
+function fmt(r){return r[0]+"–"+r[1]+" g"} function portion(r,n){return Math.round(r[0]/n)+"–"+Math.round(r[1]/n)+" g"}
+function calc(){
+let age=+document.getElementById("age").value, weight=+document.getElementById("weight").value, err=document.getElementById("err");
+err.style.display="none";
+if(!Number.isFinite(age)||age<4.35||age>87){err.textContent="Bitte ein Alter zwischen etwa 4,5 und 87 Wochen eingeben.";err.style.display="block";return}
+if(!Number.isFinite(weight)||weight<5||weight>80){err.textContent="Bitte ein Gewicht zwischen 5 und 80 kg eingeben.";err.style.display="block";return}
+let a=ageBand(age), wet=interp(weight,WW,WD[a.w]), dry=interp(weight,DW,DD[a.d]);
+if(!wet){err.textContent="Für Nassfutter liegt die Tabelle zwischen 5 und 40 kg.";err.style.display="block";return}
+if(!dry){err.textContent="Für diese Kombination liegt in der bereitgestellten Trockenfuttertabelle keine passende Gewichtsstufe vor.";err.style.display="block";return}
+document.getElementById("badge").textContent=a.l;document.getElementById("info").textContent=age+" Wochen · "+weight+" kg";
+document.getElementById("wet").textContent=fmt(wet);document.getElementById("dry").textContent=fmt(dry);
+[4,3,2].forEach(n=>{document.getElementById("w"+n).textContent=portion(wet,n);document.getElementById("d"+n).textContent=portion(dry,n)});
+document.getElementById("details").innerHTML="Grundlage: Nassfutter <strong>"+a.w+"</strong> · Trockenfutter <strong>"+a.d+"</strong>. Gewichtswerte zwischen Tabellenstufen wurden linear interpoliert.";
 }
-buildTable();
-calculate();
-
-document.getElementById("age").addEventListener("input",calculate);
-document.getElementById("weight").addEventListener("input",calculate);
-document.getElementById("meals").addEventListener("change",calculate);
+DW.forEach((w,i)=>{let tr=document.createElement("tr");tr.innerHTML="<td>"+w+" kg</td>"+["1","2","3","4","5-6","7-12","13-20"].map(k=>DD[k][i]?"<td>"+fmt(DD[k][i])+"</td>":"<td>—</td>").join("");document.getElementById("dryTable").appendChild(tr)});
+calc();document.getElementById("age").addEventListener("input",calc);document.getElementById("weight").addEventListener("input",calc);
 </script>
-</body>
-</html>
+</body></html>
